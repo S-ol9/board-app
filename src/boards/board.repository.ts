@@ -1,14 +1,16 @@
 import { Injectable } from "@nestjs/common";
-import { DataSource, Repository } from "typeorm";
+import { InjectEntityManager, InjectRepository } from "@nestjs/typeorm";
+import { EntityManager, Repository } from "typeorm";
 import { Board } from "./board.entity";
 
 @Injectable()
 export class BoardRepository extends Repository<Board> {
-    constructor(dataSource: DataSource) {
-        super(Board, dataSource.createEntityManager());
+    constructor(@InjectEntityManager() private entityManager: EntityManager) {
+        super(Board, entityManager);
     }
 
     async getBoardById(id: number) {
-        return await this.findOneBy({id: id});
+        return await this.findOne({ where: { id } });
     }
 }
+
