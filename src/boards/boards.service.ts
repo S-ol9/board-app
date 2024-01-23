@@ -11,7 +11,7 @@ export class BoardsService {
     constructor(
         @InjectRepository(BoardRepository)
         private boardRepository: BoardRepository,
-    ){}
+    ) { }
     // private boards: Board[] = []; // private로 선언하지 않으면 다른 컴포넌트에서 boards의 배열값을 수정할 수 있음.
 
     // getAllBoards(): Board[] {
@@ -36,10 +36,10 @@ export class BoardsService {
         return this.boardRepository.createBoard(createBoardDto);
     }
 
-    async getBoardById(id: number): Promise <Board> {
-        const found = await this.boardRepository.findOneBy({id});
+    async getBoardById(id: number): Promise<Board> {
+        const found = await this.boardRepository.findOneBy({ id });
 
-        if(!found) {
+        if (!found) {
             throw new NotFoundException(`Can't find Board with id ${id}`)
         }
 
@@ -55,7 +55,14 @@ export class BoardsService {
     //     return found;
     // }
 
-    
+    async deleteBoard(id: number): Promise<void> {
+        const result = await this.boardRepository.delete(id);
+
+        if (result.affected === 0) {
+            throw new NotFoundException(`Can't find Board with id ${id}`)
+        }
+        console.log('result', result);
+    }
     // deleteBoard(id: string): void { // 리턴 값을 주지 않을 거기에 void로 명시
     //     const found = this.getBoardById(id)
     //     this.boards = this.boards.filter((board) => board.id !== found.id);

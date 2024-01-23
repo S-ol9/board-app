@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { BoardStatus } from './board-status.enum';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -44,6 +44,11 @@ export class BoardsController {
     //     return this.boardsService.getBoardById(id)
     // }
 
+    @Delete('/:id')
+    deleteBoard(@Param('id', ParseIntPipe) id): Promise<void> {
+        return this.boardsService.deleteBoard(id);
+    }
+    // db로 연결해서 다시 만든 id는 값이 number이므로 pipe 사용 가능
     // @Delete('/:id')
     // deleteBoard(@Param('id') id: string): void {
     //     this.boardsService.deleteBoard(id);
