@@ -11,6 +11,10 @@ export class BoardsController {
     // 앞에 접근 제한자를 설정해줌으로써 인수 파라미터에서 암묵적으로 프로퍼티로 선언
     // this.boardsService.메소드() 형식으로 바로 쓸 수 있음.
 
+    @Get()
+    getAllBoard(): Promise<Board[]> {
+        return this.boardsService.getAllBoards();
+    }
     // @Get('/') //핸들러 생성
     // getAllBoard() {
     //     return this.boardsService.getAllBoards();

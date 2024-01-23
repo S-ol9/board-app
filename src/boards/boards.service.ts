@@ -12,6 +12,10 @@ export class BoardsService {
         @InjectRepository(BoardRepository)
         private boardRepository: BoardRepository,
     ) { }
+
+    async getAllBoards(): Promise<Board[]> {
+        return this.boardRepository.find();
+    }
     // private boards: Board[] = []; // private로 선언하지 않으면 다른 컴포넌트에서 boards의 배열값을 수정할 수 있음.
 
     // getAllBoards(): Board[] {
