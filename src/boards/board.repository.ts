@@ -5,7 +5,7 @@ import { Board } from "./board.entity";
 
 @Injectable()
 export class BoardRepository extends Repository<Board> {
-    constructor(@InjectEntityManager() private entityManager: EntityManager) {
+    constructor(@InjectEntityManager() private readonly entityManager: EntityManager) {
         super(Board, entityManager);
     }
 
