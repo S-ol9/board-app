@@ -32,17 +32,8 @@ export class BoardsService {
     //     return board;
     // }
 
-    async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
-        const {title, description} = createBoardDto;
-
-        const board = this.boardRepository.create({
-            title,
-            description,
-            status: BoardStatus.PUBLIC
-        })
-
-        await this.boardRepository.save(board);
-        return board;
+    createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
+        return this.boardRepository.createBoard(createBoardDto);
     }
 
     async getBoardById(id: number): Promise <Board> {
@@ -64,6 +55,7 @@ export class BoardsService {
     //     return found;
     // }
 
+    
     // deleteBoard(id: string): void { // 리턴 값을 주지 않을 거기에 void로 명시
     //     const found = this.getBoardById(id)
     //     this.boards = this.boards.filter((board) => board.id !== found.id);
