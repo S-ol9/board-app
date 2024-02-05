@@ -16,8 +16,10 @@ export class BoardsController {
     // this.boardsService.메소드() 형식으로 바로 쓸 수 있음.
 
     @Get()
-    getAllBoard(): Promise<Board[]> {
-        return this.boardsService.getAllBoards();
+    getAllBoard(
+        @GetUser() user: User
+    ): Promise<Board[]> {
+        return this.boardsService.getAllBoards(user);
     }
     // @Get('/') //핸들러 생성
     // getAllBoard() {

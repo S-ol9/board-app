@@ -14,8 +14,14 @@ export class BoardsService {
         private boardRepository: BoardRepository,
     ) { }
 
-    async getAllBoards(): Promise<Board[]> {
-        return this.boardRepository.find();
+    async getAllBoards(user: User): Promise<Board[]> {
+        const query = this.boardRepository.createQueryBuilder('board');
+
+        query.where('board.userId = :userId', { userId: user.id });
+
+        const boards = await query.getMany();
+
+        return boards;
     }
     // private boards: Board[] = []; // private로 선언하지 않으면 다른 컴포넌트에서 boards의 배열값을 수정할 수 있음.
 
