@@ -11,7 +11,7 @@ import { User } from 'src/auth/user.entity';
 @Controller('boards')
 @UseGuards(AuthGuard())
 export class BoardsController {
-    constructor(private boardsService: BoardsService)  {};
+    constructor(private boardsService: BoardsService) { };
     // 앞에 접근 제한자를 설정해줌으로써 인수 파라미터에서 암묵적으로 프로퍼티로 선언
     // this.boardsService.메소드() 형식으로 바로 쓸 수 있음.
 
@@ -41,12 +41,12 @@ export class BoardsController {
     @Post()
     @UsePipes(ValidationPipe)
     createBoard(@Body() CreateBoardDto: CreateBoardDto,
-    @GetUser() user: User): Promise<Board> {
+        @GetUser() user: User): Promise<Board> {
         return this.boardsService.createBoard(CreateBoardDto, user);
     }
-    
+
     @Get('/:id')
-    getBoardById(@Param('id') id:number): Promise<Board> {
+    getBoardById(@Param('id') id: number): Promise<Board> {
         return this.boardsService.getBoardById(id);
     }
 
@@ -56,8 +56,9 @@ export class BoardsController {
     // }
 
     @Delete('/:id')
-    deleteBoard(@Param('id', ParseIntPipe) id): Promise<void> {
-        return this.boardsService.deleteBoard(id);
+    deleteBoard(@Param('id', ParseIntPipe) id,
+        @GetUser() user: User): Promise<void> {
+        return this.boardsService.deleteBoard(id, user);
     }
     // db로 연결해서 다시 만든 id는 값이 number이므로 pipe 사용 가능
     // @Delete('/:id')
