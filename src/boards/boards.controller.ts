@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, ParseIntPipe, Patch, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { BoardStatus } from './board-status.enum';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -11,6 +11,7 @@ import { User } from 'src/auth/user.entity';
 @Controller('boards')
 @UseGuards(AuthGuard())
 export class BoardsController {
+    private logger = new Logger('BoardsController');
     constructor(private boardsService: BoardsService) { };
     // 앞에 접근 제한자를 설정해줌으로써 인수 파라미터에서 암묵적으로 프로퍼티로 선언
     // this.boardsService.메소드() 형식으로 바로 쓸 수 있음.
@@ -19,6 +20,7 @@ export class BoardsController {
     getAllBoard(
         @GetUser() user: User
     ): Promise<Board[]> {
+        this.logger.verbose(`User ${user.username} trying to get all boards`);
         return this.boardsService.getAllBoards(user);
     }
     // @Get('/') //핸들러 생성
@@ -40,9 +42,11 @@ export class BoardsController {
 
     @Post()
     @UsePipes(ValidationPipe)
-    createBoard(@Body() CreateBoardDto: CreateBoardDto,
+    createBoard(@Body() createBoardDto: CreateBoardDto,
         @GetUser() user: User): Promise<Board> {
-        return this.boardsService.createBoard(CreateBoardDto, user);
+        this.logger.verbose(`User ${user.username} creating a new board.
+            Payload: ${JSON.stringify(createBoardDto)}`)
+        return this.boardsService.createBoard(createBoardDto, user);
     }
 
     @Get('/:id')
